@@ -1,6 +1,6 @@
 class DefaultData {
-  final foreignLanguage = 2;
-  final nativeLanguage = 0;
+  final foreignLanguage = "spanish";
+  final nativeLanguage = "english";
 }
 
 final defaultData = DefaultData();

@@ -22,7 +22,6 @@ class _ChatState extends State<Chat> {
   List<String> convo = ["Click below to generate a conversation!"];
   int currSentence = -1;
   late String foreignLanguage;
-  final languages = ["english", "french", "spanish"];
   late String nativeLanguage;
   late String prompt;
   FlutterTts tts = FlutterTts();
@@ -61,17 +60,17 @@ class _ChatState extends State<Chat> {
 
   @override
   void dispose() async {
-    await tts.stop();
-
     super.dispose();
+
+    await tts.stop();
   }
 
   @override
   void initState() {
     super.initState();
 
-    foreignLanguage = languages[ widget.settings.getInt("foreignLanguage") ?? defaultData.foreignLanguage ];
-    nativeLanguage = languages[ widget.settings.getInt("nativeLanguage") ?? defaultData.nativeLanguage ];
+    foreignLanguage = widget.settings.getString("foreignLanguage") ?? defaultData.foreignLanguage;
+    nativeLanguage = widget.settings.getString("nativeLanguage") ?? defaultData.nativeLanguage;
     prompt = """
 Create a conversation between Bea and Jay about their vacation plans.
 Start off with societally expected formalities.

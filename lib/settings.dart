@@ -15,15 +15,15 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  late int foreignLanguage;
-  late int nativeLanguage;
+  late String foreignLanguage;
+  late String nativeLanguage;
 
   @override
   void initState() {
     super.initState();
 
-    foreignLanguage = widget.settings.getInt( "foreignLanguage" ) ?? defaultData.foreignLanguage;
-    nativeLanguage = widget.settings.getInt( "nativeLanguage" ) ?? defaultData.nativeLanguage;
+    foreignLanguage = widget.settings.getString( "foreignLanguage" ) ?? defaultData.foreignLanguage;
+    nativeLanguage = widget.settings.getString( "nativeLanguage" ) ?? defaultData.nativeLanguage;
   }
 
   @override
@@ -38,44 +38,44 @@ class _SettingsState extends State<Settings> {
                 dropdownMenuEntries: [
                   DropdownMenuEntry(
                     label: "English",
-                    value: 0
+                    value: "english"
                   ),
                   DropdownMenuEntry(
                     label: "French",
-                    value: 1
+                    value: "french"
                   ),
                   DropdownMenuEntry(
                     label: "Spanish",
-                    value: 2
+                    value: "spanish"
                   )
                 ],
                 initialSelection: foreignLanguage,
                 label: Text( "Foreign language" ),
                 onSelected: (value) {
                   setState( () => foreignLanguage = value! );
-                  widget.settings.setInt( "foreignLanguage", foreignLanguage );
+                  widget.settings.setString( "foreignLanguage", foreignLanguage );
                 }
               ),
               DropdownMenu(
                 dropdownMenuEntries: [
                   DropdownMenuEntry(
                     label: "English",
-                    value: 0
+                    value: "english"
                   ),
                   DropdownMenuEntry(
                     label: "French",
-                    value: 1
+                    value: "french"
                   ),
                   DropdownMenuEntry(
                     label: "Spanish",
-                    value: 2
+                    value: "spanish"
                   )
                 ],
                 initialSelection: nativeLanguage,
                 label: Text( "Native language" ),
                 onSelected: (value) {
                   setState( () => nativeLanguage = value! );
-                  widget.settings.setInt( "nativeLanguage", nativeLanguage );
+                  widget.settings.setString( "nativeLanguage", nativeLanguage );
                 }
               )
             ]
