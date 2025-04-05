@@ -57,13 +57,6 @@ Jay: [english](spanish)
   }
 
   @override
-  void dispose() async {
-    await tts.stop();
-
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(

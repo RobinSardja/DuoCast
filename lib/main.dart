@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'chat.dart';
 import 'profile.dart';
 import 'settings.dart';
 
-void main() {
-  runApp(const MainApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final settings = await SharedPreferences.getInstance();
+
+  runApp( MainApp( settings: settings ) );
 }
 
 class MainApp extends StatefulWidget {
-  const MainApp({super.key});
+  const MainApp({
+    super.key,
+    required this.settings
+  });
+
+  final SharedPreferences settings;
 
   @override
   State<MainApp> createState() => _MainAppState();
@@ -38,7 +49,7 @@ class _MainAppState extends State<MainApp> {
           children: [
             Profile(),
             Chat(),
-            Settings()
+            Settings( settings: widget.settings )
           ]
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -60,8 +71,8 @@ class _MainAppState extends State<MainApp> {
           onTap: (selectedPage) {
             setState( () => currPage = selectedPage );
             pageController.jumpToPage( selectedPage );
-          },
-        ),
+          }
+        )
       )
     );
   }
