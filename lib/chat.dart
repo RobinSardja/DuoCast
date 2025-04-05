@@ -1,11 +1,18 @@
+import 'package:duocast/data.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'gemini.dart';
 
 class Chat extends StatefulWidget {
-  const Chat({super.key});
+  const Chat({
+    super.key,
+    required this.settings
+  });
+
+  final SharedPreferences settings;
 
   @override
   State<Chat> createState() => _ChatState();
@@ -14,14 +21,10 @@ class Chat extends StatefulWidget {
 class _ChatState extends State<Chat> {
   List<String> convo = ["Click below to generate a conversation!"];
   int currSentence = -1;
-  final prompt = """
-Create a conversation between Bea and Jay about their vacation plans.
-Start off with societally expected formalities.
-Use basic conversational language.
-Display each person's original response in english in square brackets and translated in spanish in parantheses like so:
-Bea: [english](spanish)
-Jay: [english](spanish)
-""";
+  late String foreignLanguage;
+  final languages = ["english", "french", "spanish"];
+  late String nativeLanguage;
+  late String prompt;
   FlutterTts tts = FlutterTts();
 
   void extractConvo( String output ) {
@@ -54,6 +57,29 @@ Jay: [english](spanish)
       await tts.speak( convo[currSentence] );
       setState( () => currSentence++ );
     }
+  }
+
+  @override
+  void dispose() async {
+    await tts.stop();
+
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    foreignLanguage = languages[ widget.settings.getInt("foreignLanguage") ?? defaultData.foreignLanguage ];
+    nativeLanguage = languages[ widget.settings.getInt("nativeLanguage") ?? defaultData.nativeLanguage ];
+    prompt = """
+Create a conversation between Bea and Jay about their vacation plans.
+Start off with societally expected formalities.
+Use basic conversational language.
+Display each person's original response in $nativeLanguage in square brackets and translated in $foreignLanguage in parantheses like so:
+Bea: [$nativeLanguage]($foreignLanguage)
+Jay: [$nativeLanguage]($foreignLanguage)
+""";
   }
 
   @override

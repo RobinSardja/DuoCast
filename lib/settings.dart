@@ -53,7 +53,7 @@ class _SettingsState extends State<Settings> {
                 label: Text( "Foreign language" ),
                 onSelected: (value) {
                   setState( () => foreignLanguage = value! );
-                  widget.settings.setInt( "foreignLangauge", foreignLanguage );
+                  widget.settings.setInt( "foreignLanguage", foreignLanguage );
                 }
               ),
               DropdownMenu(

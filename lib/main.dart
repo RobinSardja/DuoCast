@@ -48,7 +48,7 @@ class _MainAppState extends State<MainApp> {
           onPageChanged: (selectedPage) => setState( () => currPage = selectedPage ),
           children: [
             Profile(),
-            Chat(),
+            Chat( settings: widget.settings ),
             Settings( settings: widget.settings )
           ]
         ),
