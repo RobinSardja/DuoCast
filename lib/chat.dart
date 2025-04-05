@@ -100,7 +100,7 @@ Jay: [$nativeLanguage]($foreignLanguage)
             selected: entry.key == currSentence,
             title: Text( entry.value, textAlign: TextAlign.center )
           )
-        ).toList()
+        ).toList()..add( ListTile( title: Image.asset( "assets/icon.jpeg" ) ) )
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
