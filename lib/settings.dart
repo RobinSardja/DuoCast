@@ -17,6 +17,7 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  late String conversationTopic;
   late String foreignLanguage;
   late String nativeLanguage;
   late double speechPitch;
@@ -27,6 +28,7 @@ class _SettingsState extends State<Settings> {
   void initState() {
     super.initState();
 
+    conversationTopic = widget.settings.getString( "conversationTopic" ) ?? defaultData.conversationTopic;
     foreignLanguage = widget.settings.getString( "foreignLanguage" ) ?? defaultData.foreignLanguage;
     nativeLanguage = widget.settings.getString( "nativeLanguage" ) ?? defaultData.nativeLanguage;
     speechPitch = widget.settings.getDouble( "speechPitch" ) ?? defaultData.speechPitch;
@@ -87,6 +89,32 @@ class _SettingsState extends State<Settings> {
                 }
               )
             ]
+          )
+        ),
+        ListTile(
+          title: Center(
+            child: DropdownMenu(
+              dropdownMenuEntries: [
+                DropdownMenuEntry(
+                  label: "Dinner plans",
+                  value: "dinner plans"
+                ),
+                DropdownMenuEntry(
+                  label: "New Year's resolutions",
+                  value: "New Year's resolutions"
+                ),
+                DropdownMenuEntry(
+                  label: "Vacation ideas",
+                  value: "vacation ideas"
+                )
+              ],
+              initialSelection: conversationTopic,
+              label: Text( "Conversation topic" ),
+              onSelected: (value) {
+                setState( () => conversationTopic = value! );
+                widget.settings.setString( "conversationTopic", conversationTopic );
+              }
+            )
           )
         ),
         ListTile( title: Center( child: Text( "Speech pitch: $speechPitch" ) ) ),

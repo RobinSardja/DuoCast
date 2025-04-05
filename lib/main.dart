@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'chat.dart';
-import 'profile.dart';
 import 'settings.dart';
 
 void main() async {
@@ -27,13 +26,13 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  int currPage = 1;
-  PageController pageController = PageController( initialPage: 1 );
+  int currPage = 0;
+  PageController pageController = PageController( initialPage: 0 );
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.light().copyWith(
+      theme: ThemeData.dark().copyWith(
         appBarTheme: AppBarTheme(
           centerTitle: true
         )
@@ -47,7 +46,6 @@ class _MainAppState extends State<MainApp> {
           controller: pageController,
           onPageChanged: (selectedPage) => setState( () => currPage = selectedPage ),
           children: [
-            Profile(),
             Chat( settings: widget.settings ),
             Settings( settings: widget.settings )
           ]
@@ -55,10 +53,6 @@ class _MainAppState extends State<MainApp> {
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: currPage,
           items: [
-            BottomNavigationBarItem(
-              icon: Icon( Icons.person ),
-              label: "Profile"
-            ),
             BottomNavigationBarItem(
               icon: Icon( Icons.message ),
               label: "Chat"

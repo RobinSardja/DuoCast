@@ -19,6 +19,7 @@ class Chat extends StatefulWidget {
 }
 
 class _ChatState extends State<Chat> {
+  late String conversationTopic;
   List<String> convo = ["Click below to generate a conversation!"];
   int currSentence = -1;
   late String foreignLanguage;
@@ -35,7 +36,7 @@ class _ChatState extends State<Chat> {
 
     convo.clear();
     for( String line in lines ) {
-      if( line.startsWith( "Bea:" ) || line.startsWith( "Jay: " ) ) {
+      if( line.startsWith( "Bea: " ) || line.startsWith( "Jay: " ) ) {
         final matches = re.allMatches(line);
         for( Match match in matches ) {
           convo.add( match.group(1)! );
@@ -46,9 +47,9 @@ class _ChatState extends State<Chat> {
   }
 
   void speakConvo() async {
-    final voices = await tts.getVoices;
-    bool firstVoice = true;
     currSentence = 0;
+    bool firstVoice = true;
+    final voices = await tts.getVoices;
 
     await tts.setPitch( speechPitch );
     await tts.setSpeechRate( speechRate );
@@ -76,13 +77,14 @@ class _ChatState extends State<Chat> {
   void initState() {
     super.initState();
 
+    conversationTopic = widget.settings.getString( "conversationTopic" ) ?? defaultData.conversationTopic;
     foreignLanguage = widget.settings.getString( "foreignLanguage" ) ?? defaultData.foreignLanguage;
     nativeLanguage = widget.settings.getString( "nativeLanguage" ) ?? defaultData.nativeLanguage;
     speechPitch = widget.settings.getDouble( "speechPitch" ) ?? defaultData.speechPitch;
     speechRate = widget.settings.getDouble( "speechRate" ) ?? defaultData.speechRate;
     speechVolume = widget.settings.getDouble( "speechVolume" ) ?? defaultData.speechVolume;
     prompt = """
-Create a conversation between Bea and Jay about their vacation plans.
+Create a conversation between Bea and Jay about $conversationTopic.
 Start off with societally expected formalities.
 Use basic conversational language.
 Display each person's original response in $nativeLanguage in square brackets and translated in $foreignLanguage in parantheses like so:
