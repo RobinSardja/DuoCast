@@ -1,6 +1,8 @@
-import 'package:duocast/data.dart';
 import 'package:flutter/material.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'data.dart';
 
 class Settings extends StatefulWidget {
   const Settings({
@@ -17,6 +19,9 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   late String foreignLanguage;
   late String nativeLanguage;
+  late double speechPitch;
+  late double speechRate;
+  late double speechVolume;
 
   @override
   void initState() {
@@ -24,6 +29,9 @@ class _SettingsState extends State<Settings> {
 
     foreignLanguage = widget.settings.getString( "foreignLanguage" ) ?? defaultData.foreignLanguage;
     nativeLanguage = widget.settings.getString( "nativeLanguage" ) ?? defaultData.nativeLanguage;
+    speechPitch = widget.settings.getDouble( "speechPitch" ) ?? defaultData.speechPitch;
+    speechRate = widget.settings.getDouble( "speechRate" ) ?? defaultData.speechRate;
+    speechVolume = widget.settings.getDouble( "speechVolume" ) ?? defaultData.speechVolume;
   }
 
   @override
@@ -79,6 +87,36 @@ class _SettingsState extends State<Settings> {
                 }
               )
             ]
+          )
+        ),
+        ListTile( title: Center( child: Text( "Speech pitch: $speechPitch" ) ) ),
+        ListTile(
+          title: Slider(
+            divisions: 20,
+            max: 2.0,
+            onChanged: (value) => setState( () => speechPitch = value ),
+            onChangeEnd: (value) => widget.settings.setDouble( "speechPitch", value ),
+            value: speechPitch
+          )
+        ),
+        ListTile( title: Center( child: Text( "Speech rate: $speechRate" ) ) ),
+        ListTile(
+          title: Slider(
+            divisions: 20,
+            max: 2.0,
+            onChanged: (value) => setState( () => speechRate = value ),
+            onChangeEnd: (value) => widget.settings.setDouble( "speechRate", value ),
+            value: speechRate
+          )
+        ),
+        ListTile( title: Center( child: Text( "Speech volume: $speechVolume" ) ) ),
+        ListTile(
+          title: Slider(
+            divisions: 20,
+            max: 2.0,
+            onChanged: (value) => setState( () => speechVolume = value ),
+            onChangeEnd: (value) => widget.settings.setDouble( "speechVolume", value ),
+            value: speechVolume
           )
         )
       ]

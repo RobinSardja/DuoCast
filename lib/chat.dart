@@ -1,9 +1,9 @@
-import 'package:duocast/data.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'data.dart';
 import 'gemini.dart';
 
 class Chat extends StatefulWidget {
@@ -24,6 +24,9 @@ class _ChatState extends State<Chat> {
   late String foreignLanguage;
   late String nativeLanguage;
   late String prompt;
+  late double speechPitch;
+  late double speechRate;
+  late double speechVolume;
   FlutterTts tts = FlutterTts();
 
   void extractConvo( String output ) {
@@ -47,6 +50,10 @@ class _ChatState extends State<Chat> {
     bool firstVoice = true;
     currSentence = 0;
 
+    await tts.setPitch( speechPitch );
+    await tts.setSpeechRate( speechRate );
+    await tts.setVolume( speechVolume );
+
     while( currSentence < convo.length ) {
       if( currSentence % 2 == 0 ) {
         await tts.setVoice( Map<String, String>.from( voices[ firstVoice ? 0 : 1 ] ) );
@@ -69,8 +76,11 @@ class _ChatState extends State<Chat> {
   void initState() {
     super.initState();
 
-    foreignLanguage = widget.settings.getString("foreignLanguage") ?? defaultData.foreignLanguage;
-    nativeLanguage = widget.settings.getString("nativeLanguage") ?? defaultData.nativeLanguage;
+    foreignLanguage = widget.settings.getString( "foreignLanguage" ) ?? defaultData.foreignLanguage;
+    nativeLanguage = widget.settings.getString( "nativeLanguage" ) ?? defaultData.nativeLanguage;
+    speechPitch = widget.settings.getDouble( "speechPitch" ) ?? defaultData.speechPitch;
+    speechRate = widget.settings.getDouble( "speechRate" ) ?? defaultData.speechRate;
+    speechVolume = widget.settings.getDouble( "speechVolume" ) ?? defaultData.speechVolume;
     prompt = """
 Create a conversation between Bea and Jay about their vacation plans.
 Start off with societally expected formalities.
