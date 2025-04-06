@@ -32,11 +32,6 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.dark().copyWith(
-        appBarTheme: AppBarTheme(
-          centerTitle: true
-        )
-      ),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
@@ -66,6 +61,11 @@ class _MainAppState extends State<MainApp> {
             setState( () => currPage = selectedPage );
             pageController.jumpToPage( selectedPage );
           }
+        )
+      ),
+      theme: ThemeData.dark().copyWith(
+        appBarTheme: AppBarTheme(
+          centerTitle: true
         )
       )
     );
