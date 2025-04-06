@@ -23,6 +23,7 @@ class _ChatState extends State<Chat> {
   List<String> convo = ["Click below to generate a conversation!"];
   int currSentence = -1;
   late String foreignLanguage;
+  bool isGenerating = false;
   late String nativeLanguage;
   late String prompt;
   late double speechPitch;
@@ -57,7 +58,7 @@ class _ChatState extends State<Chat> {
 
     while( currSentence < convo.length ) {
       if( currSentence % 2 == 0 ) {
-        await tts.setVoice( Map<String, String>.from( voices[ firstVoice ? 0 : 1 ] ) );
+        await tts.setVoice( Map<String, String>.from( voices[ firstVoice ? 2 : 3 ] ) );
         firstVoice = !firstVoice;
       }
       await tts.awaitSpeakCompletion(true);
@@ -106,10 +107,14 @@ Jay: [$nativeLanguage]($foreignLanguage)
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          setState( () => convo = ["Generating"] );
-          extractConvo( await pipe(prompt) );
-          speakConvo();
-          setState(() {});
+          if( isGenerating == false ) {
+            isGenerating = true;
+            setState( () => convo = ["Generating"] );
+            extractConvo( await pipe(prompt) );
+            speakConvo();
+            setState(() {});
+            isGenerating = false;
+          }
         },
         child: Icon( Icons.chat )
       ),
